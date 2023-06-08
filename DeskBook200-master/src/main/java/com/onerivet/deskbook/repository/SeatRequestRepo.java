@@ -21,9 +21,9 @@ public interface SeatRequestRepo extends JpaRepository<SeatRequest, Integer> {
 	public List<SeatRequest> findSeatRequestBySeatIdAndRequestStatus(SeatNumber seatId,Pageable pageable, int requestStatus);
 	
 	
-	@Query("SELECT sr FROM SeatRequest sr LEFT JOIN sr.employee e WHERE e.firstName = :firstName ")
-    public List<SeatRequest> getByFirstNameOrLastName(@Param("firstName")String firstname,Pageable pageble );
+	@Query("SELECT sr FROM SeatRequest sr LEFT JOIN sr.employee e WHERE e.firstName LIKE CONCAT(:firstName, '%') OR e.lastName LIKE CONCAT(:lastName, '%')")
+    public List<SeatRequest> getByFirstNameOrLastName(@Param("firstName")String firstname,@Param("lastName")String lastname,Pageable pageble );
 	
-	 
+
 
 }

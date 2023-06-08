@@ -85,7 +85,7 @@ public class RequestHistoryImpl  implements RequestHistoryService{
 	@Override
 	public List<RequestHistoryDto> searchByFirstNameOrLastName(String name, Pageable pageble) {
 		
-		List<SeatRequest> sr = this.seatRequestRepo.getByFirstNameOrLastName(name,pageble);
+		List<SeatRequest> sr = this.seatRequestRepo.getByFirstNameOrLastName(name,name,pageble);
 		
 		List<RequestHistoryDto> list = new ArrayList<>();
 		for(int i=0; i< sr.size(); i++ ) {
