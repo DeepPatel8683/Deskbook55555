@@ -14,10 +14,10 @@ import com.onerivet.deskbook.models.entity.SeatRequest;
 public interface SeatRequestRepo extends JpaRepository<SeatRequest, Integer> {
 	
 	
-	@Query(value = "SELECT sr FROM SeatRequest sr WHERE  sr.seatId =:seatId ORDER BY sr.bookingDate DESC")
+	@Query(value = "SELECT sr FROM SeatRequest sr WHERE  sr.seat =:seatId ORDER BY sr.bookingDate DESC")
 	public List<SeatRequest> findSeatRequestBySeatId(SeatNumber seatId,Pageable pageable);
 	
-	@Query(value = "SELECT sr FROM SeatRequest sr WHERE  sr.seatId =:seatId AND sr.requestStatus=:requestStatus ORDER BY sr.bookingDate DESC")
+	@Query(value = "SELECT sr FROM SeatRequest sr WHERE  sr.seat =:seatId AND sr.requestStatus=:requestStatus ORDER BY sr.bookingDate DESC")
 	public List<SeatRequest> findSeatRequestBySeatIdAndRequestStatus(SeatNumber seatId,Pageable pageable, int requestStatus);
 	
 	

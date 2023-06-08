@@ -9,7 +9,7 @@ import com.onerivet.deskbook.models.payload.RequestHistoryDto;
 public interface RequestHistoryService {
 
 	
-	public List<RequestHistoryDto> getRequestHistory(String employeeId,Pageable pageble, int requestStatus);
+	public List<RequestHistoryDto> getRequestHistory(String employeeId,Pageable pageble, Integer requestStatus);
 	
 	 public List<RequestHistoryDto> searchByFirstNameOrLastName(String name,Pageable pageble);
 

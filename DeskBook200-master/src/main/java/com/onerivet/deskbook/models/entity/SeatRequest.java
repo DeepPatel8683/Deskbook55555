@@ -37,7 +37,7 @@ public class SeatRequest {
 
     @OneToOne
     @JoinColumn(name = "SeatId")
-    private SeatNumber seatId;
+    private SeatNumber seat;
 
     @Column(name = "CreatedDate")
     private LocalDateTime createdDate;

@@ -23,18 +23,25 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RequestMapping("/api/deskbook")
 public class RequestHistoryController {
 	
+	
 	@Autowired
 	private RequestHistoryService requestHistoryService;
 	
-	@GetMapping("/request-history/{requestStatus}")
-	public GenericResponse<List<RequestHistoryDto>>  getReqestHistory(Principal principal,  PaginationAndSorting pagination, @PathVariable int requestStatus){
-		System.out.println(pagination.getSize());
+	public RequestHistoryController(RequestHistoryService requestHistoryService) {
+		super();
+		this.requestHistoryService = requestHistoryService;
+	}
+	
+	@GetMapping(value = { "/request-history/{requestStatus}","/request-history/"})
+	public GenericResponse<List<RequestHistoryDto>>  getReqestHistory(Principal principal,  PaginationAndSorting pagination, @PathVariable(required = false) Integer requestStatus){
 		GenericResponse<List<RequestHistoryDto>> genericResponse = new GenericResponse<>(this.requestHistoryService.getRequestHistory(principal.getName(),pagination.createPageRequest(), requestStatus), null);
 		return genericResponse;
 		
 		
 	}
 	
+	
+
 	@GetMapping("/search/{name}")
 	 public GenericResponse<List<RequestHistoryDto>> getAllbyFirstNameandLastName(@PathVariable("name") String name,PaginationAndSorting sorting) {
 		

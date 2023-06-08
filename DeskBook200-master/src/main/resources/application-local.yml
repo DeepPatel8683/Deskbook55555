@@ -8,7 +8,7 @@ spring:
           audiences: DeskBookApi
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=db12;encrypt=true;trustServerCertificate=true
-    username: deep
+    username: sa
     password: Admin#123
   jpa:
     show-sql: true
