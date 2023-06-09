@@ -60,6 +60,11 @@ public class SeatRequest {
 
     @Column(name = "DeletedDate")
     private LocalDateTime deletedDate;
+
+	public SeatRequest(int id) {
+		super();
+		this.id = id;
+	}
     
    
     

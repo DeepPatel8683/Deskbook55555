@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.onerivet.deskbook.exception.ResourceNotFoundException;
 import com.onerivet.deskbook.models.entity.Employee;
 import com.onerivet.deskbook.models.entity.SeatConfiguration;
 import com.onerivet.deskbook.models.entity.SeatNumber;
 import com.onerivet.deskbook.models.entity.SeatRequest;
 import com.onerivet.deskbook.models.payload.RequestHistoryDto;
+import com.onerivet.deskbook.models.payload.RequestHistoryTakeActionDto;
 import com.onerivet.deskbook.repository.SeatConfigurationRepo;
 import com.onerivet.deskbook.repository.SeatRequestRepo;
 import com.onerivet.deskbook.services.RequestHistoryService;
@@ -24,14 +24,11 @@ public class RequestHistoryImpl  implements RequestHistoryService{
 	
 	
 	@Autowired
-	private SeatRequestRepo seatRequestRepo;
+	private SeatRequestRepo seatRequestRepo;             
 	
 
 	@Autowired
 	private SeatConfigurationRepo seatConfigurationRepo;
-	
-	
-	
 	
 
 	public RequestHistoryImpl(SeatRequestRepo seatRequestRepo, SeatConfigurationRepo seatConfigurationRepo) {
@@ -59,6 +56,7 @@ public class RequestHistoryImpl  implements RequestHistoryService{
 				requestHistoryDto.setDeskNo(seatRequest.get(i).getSeat().getColumn().getColumnName() + "" + seatRequest.get(i).getSeat().getSeatNumber());
 				requestHistoryDto.setEmailId(seatRequest.get(i).getEmployee().getEmailId());
 				requestHistoryDto.setRequestFor(seatRequest.get(i).getBookingDate());
+				requestHistoryDto.setSeatRequestId(seatRequest.get(i).getId());
 				requestHistoryDto.setRequestDate(seatRequest.get(i).getCreatedDate());
 				requestHistoryDto.setFloorNo(seatRequest.get(i).getSeat().getColumn().getFloor().getId());
 				requestHistoryDto.setStatus(seatRequest.get(i).getRequestStatus());
@@ -78,6 +76,7 @@ public class RequestHistoryImpl  implements RequestHistoryService{
 			requestHistoryDto.setDeskNo(seatRequest.get(i).getSeat().getColumn().getColumnName() + "" + seatRequest.get(i).getSeat().getSeatNumber());
 			requestHistoryDto.setEmailId(seatRequest.get(i).getEmployee().getEmailId());
 			requestHistoryDto.setRequestFor(seatRequest.get(i).getBookingDate());
+			requestHistoryDto.setSeatRequestId(seatRequest.get(i).getId());
 			requestHistoryDto.setRequestDate(seatRequest.get(i).getCreatedDate());
 			requestHistoryDto.setFloorNo(seatRequest.get(i).getSeat().getColumn().getFloor().getId());
 			requestHistoryDto.setStatus(seatRequest.get(i).getRequestStatus());
@@ -89,10 +88,11 @@ public class RequestHistoryImpl  implements RequestHistoryService{
 
 	@Override
 	public List<RequestHistoryDto> searchByFirstNameOrLastName(String name, Pageable pageable) {
-	    if (name.length() < 3) {
+	    if (name.length() < 2) {
 	    	
 	    	 throw new IllegalArgumentException("Please enter at least three characters.");
 	    }
+	    
 	    
 	    List<SeatRequest> seatRequest = this.seatRequestRepo.getByFirstNameOrLastName(name, name, pageable);
 
@@ -110,11 +110,36 @@ public class RequestHistoryImpl  implements RequestHistoryService{
 			requestHistoryDto.setEmailId(seatRequest.get(i).getEmployee().getEmailId());
 			requestHistoryDto.setRequestFor(seatRequest.get(i).getBookingDate());
 			requestHistoryDto.setRequestDate(seatRequest.get(i).getCreatedDate());
+			requestHistoryDto.setSeatRequestId(seatRequest.get(i).getId());
 			requestHistoryDto.setFloorNo(seatRequest.get(i).getSeat().getColumn().getFloor().getId());
 			requestHistoryDto.setStatus(seatRequest.get(i).getRequestStatus());
 			
 			list.add(requestHistoryDto);
 		}
 	    return list;
+	}
+
+	@Override
+	public RequestHistoryTakeActionDto takeAction(RequestHistoryDto dto) {
+		// TODO Auto-generated method stub
+		
+		
+		RequestHistoryTakeActionDto historyDto=new RequestHistoryTakeActionDto();
+		SeatRequest request=seatRequestRepo.findById(dto.getSeatRequestId()).get();
+		
+		String reason=request.getReason();
+		historyDto.setDeskNo(dto.getDeskNo());
+		historyDto.setEmailId(dto.getEmailId());
+		historyDto.setFloorNo(dto.getFloorNo());
+		historyDto.setName(dto.getName());
+		historyDto.setReason(reason);
+		historyDto.setRequestDate(dto.getRequestDate());
+		historyDto.setRequestFor(dto.getRequestFor());
+		historyDto.setSeatRequestId(dto.getSeatRequestId());
+		historyDto.setStatus(dto.getStatus());
+		
+		
+		
+		return historyDto;
 	}
 }
